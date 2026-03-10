@@ -30,6 +30,9 @@
       </div>
   
       <button type="submit">Login</button>
+  
+      <small *ngIf="loginError">{{ loginError }}</small>
+  
       <p class="switch-page">
         Don't have an account?
         <a routerLink="/sign-up">Sign Up</a>

@@ -1,0 +1,28 @@
+<nav class="navbar">
+
+    <div class="nav-left">
+      <a routerLink="/home" class="logo">AthenaShop</a>
+      <a routerLink="/shop" class="nav-link">Shop</a>
+    </div>
+  
+    <div class="nav-right">
+  
+      <span class="username">
+        {{ userName }}
+      </span>
+  
+      <div class="menu-container">
+  
+        <button class="menu-button" (click)="toggleMenu()">
+          ☰
+        </button>
+  
+        <div class="dropdown" *ngIf="menuOpen">
+          <button (click)="logout()">Logout</button>
+        </div>
+  
+      </div>
+  
+    </div>
+  
+  </nav>
