@@ -1,0 +1,103 @@
+<div class="shop-page">
+
+  <div class="shop-header">
+    <div>
+      <p class="small-title">Products</p>
+      <h1>SNEAKERS SHOP</h1>
+    </div>
+
+    <div class="sort-box">
+      <label for="sort">Sort by:</label>
+      <select id="sort" [(ngModel)]="selectedSort">
+        <option value="popularity">Popularity</option>
+        <option value="lowToHigh">Price: Low to High</option>
+        <option value="highToLow">Price: High to Low</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="shop-content">
+
+    <aside class="filters-panel">
+      <h3>Filters</h3>
+
+      <div class="filter-box">
+        <label for="brand">Brand</label>
+        <select id="brand" [(ngModel)]="selectedBrand">
+          <option value="All">All</option>
+          <option value="Nike">Nike</option>
+          <option value="Adidas">Adidas</option>
+          <option value="Puma">Puma</option>
+          <option value="Off-White">Off-White</option>
+        </select>
+      </div>
+
+      <div class="filter-box">
+        <label for="size">Size</label>
+        <select id="size" [(ngModel)]="selectedSize">
+          <option value="All">All</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+        </select>
+      </div>
+
+      <div class="filter-box">
+        <label for="price">Max Price</label>
+        <input id="price" type="number" [(ngModel)]="maxPrice" />
+      </div>
+
+      <button class="clear-btn" (click)="clearFilters()">Clear Filters</button>
+
+      <div class="active-filters">
+        <span *ngIf="selectedBrand !== 'All'" class="chip">
+          Brand: {{ selectedBrand }}
+        </span>
+
+        <span *ngIf="selectedSize !== 'All'" class="chip">
+          Size: {{ selectedSize }}
+        </span>
+
+        <span *ngIf="maxPrice !== 1000" class="chip">
+          Max Price: {{ maxPrice }}
+        </span>
+      </div>
+    </aside>
+
+    <section class="products-section">
+      <p
+        class="purchase-message"
+        *ngIf="purchaseMessage"
+        [class.error]="purchaseMessageType === 'error'"
+        [class.success]="purchaseMessageType === 'success'">
+        {{ purchaseMessage }}
+      </p>
+
+      <div class="shoe-list">
+        <div class="shop-card-wrapper" *ngFor="let shoe of filteredShoes">
+          <app-shoe-card
+            [shoe]="shoe"
+            [showButton]="false">
+          </app-shoe-card>
+
+          <div class="size-box">
+            <label>Size</label>
+            <select [(ngModel)]="selectedSizes[shoe.id]">
+              <option [ngValue]="null">Choose size</option>
+              <option [ngValue]="6">6</option>
+              <option [ngValue]="7">7</option>
+              <option [ngValue]="8">8</option>
+              <option [ngValue]="9">9</option>
+            </select>
+
+            <button class="purchase-btn" (click)="purchaseShoe(shoe)">
+              Add To Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>

@@ -1,0 +1,13 @@
+<div class="shoe-card">
+    <div class="shoe-image">
+      <img [src]="shoe.image" [alt]="shoe.name" />
+    </div>
+  
+    <h3>{{ shoe.name }}</h3>
+    <p>⭐ {{ shoe.rank }}/5</p>
+    <p class="price">${{ shoe.price }}</p>
+  
+    <button *ngIf="showButton" (click)="onButtonClick()">
+      {{ buttonText }}
+    </button>
+  </div>

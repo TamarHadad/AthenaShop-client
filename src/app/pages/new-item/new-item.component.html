@@ -1,0 +1,36 @@
+<div class="new-item-page">
+    <div class="page-header">
+      <p class="small-title">Manage Products</p>
+      <h1>NEW ITEM</h1>
+    </div>
+  
+    <section class="selected-shoe-section">
+      <div class="selected-image">
+        <img [src]="selectedShoe.image" [alt]="selectedShoe.name" />
+      </div>
+  
+      <div class="selected-info">
+        <h2>{{ selectedShoe.name }}</h2>
+        <p>Brand: {{ selectedShoe.brand }}</p>
+        <p>Model: {{ selectedShoe.model }}</p>
+        <p>Size: {{ selectedShoe.size }}</p>
+        <p>Rank: {{ selectedShoe.rank }}</p>
+        <p class="price">${{ selectedShoe.price }}</p>
+  
+        <button>Add To Sales</button>
+      </div>
+    </section>
+  
+    <section class="pick-section">
+      <h2>Pick a shoe for sale</h2>
+  
+      <div class="shoe-list">
+        <app-shoe-card
+          *ngFor="let shoe of shoes"
+          [shoe]="shoe"
+          buttonText="Select"
+          (buttonClicked)="selectShoe($event)">
+        </app-shoe-card>
+      </div>
+    </section>
+  </div>
