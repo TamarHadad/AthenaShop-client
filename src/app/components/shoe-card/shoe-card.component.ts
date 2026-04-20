@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Shoe } from '../../models/shoe.model';
+import { BasicShoe } from '../../models/basic-shoe.model';
 
 @Component({
   selector: 'app-shoe-card',
@@ -7,11 +7,11 @@ import { Shoe } from '../../models/shoe.model';
   styleUrls: ['./shoe-card.component.less']
 })
 export class ShoeCardComponent {
-  @Input() shoe!: Shoe;
-  @Input() buttonText: string = 'Purchase';
+  @Input() shoe!: BasicShoe;
+  @Input() buttonText: string = 'Add';
   @Input() showButton: boolean = true;
 
-  @Output() buttonClicked = new EventEmitter<Shoe>();
+  @Output() buttonClicked = new EventEmitter<BasicShoe>();
 
   onButtonClick(): void {
     this.buttonClicked.emit(this.shoe);

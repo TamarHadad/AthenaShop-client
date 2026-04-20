@@ -1,78 +1,137 @@
-import { Component } from '@angular/core';
-import { SHOES_DATA } from '../../data/shoes-data';
+import { Component, OnInit } from '@angular/core';
 import { Shoe } from '../../models/shoe.model';
+import { ShoeItem } from '../../models/shoe-item.model';
 import { CartService } from '../../services/cart.service';
+import { ShoesService } from '../../services/shoes.service';
 
 @Component({
   selector: 'app-shop',
   templateUrl: './shop.component.html',
   styleUrls: ['./shop.component.less']
 })
-export class ShopComponent {
+export class ShopComponent implements OnInit {
+  shoes: ShoeItem[] = [];
+
   selectedSort: string = 'popularity';
-  selectedBrand: string = 'All';
-  selectedSize: string = 'All';
-  maxPrice: number = 1000;
+  selectedSizeFilter: number | null = null;
+  selectedPriceMin: number = 0;
+  selectedPriceMax: number = 1000;
+
+  selectedBrands: { [brand: string]: boolean } = {
+    Adidas: false,
+    Nike: false,
+    Puma: false,
+    'Off-White': false
+  };
 
   purchaseMessage: string = '';
   purchaseMessageType: 'success' | 'error' = 'success';
 
-  selectedSizes: { [shoeId: number]: number | null } = {};
+  readonly availableFilterSizes: number[] = [
+    3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5,
+    7, 7.5, 8, 8.5, 9, 9.5, 10
+  ];
 
-  shoes: Shoe[] = SHOES_DATA;
+  readonly brands: string[] = ['Adidas', 'Nike', 'Puma', 'Off-White'];
 
-  constructor(private cartService: CartService) {}
+  constructor(
+    private cartService: CartService,
+    private shoesService: ShoesService
+  ) {}
 
-  get filteredShoes(): Shoe[] {
+  ngOnInit(): void {
+    this.shoes = this.shoesService.getSaleShoes();
+  }
+
+  get filteredShoes(): ShoeItem[] {
     let result = [...this.shoes];
 
-    if (this.selectedBrand !== 'All') {
-      result = result.filter(shoe => shoe.brand === this.selectedBrand);
+    const activeBrands = this.getSelectedBrands();
+
+    if (activeBrands.length) {
+      result = result.filter(item => activeBrands.includes(item.basicShoe.brand));
     }
 
-    if (this.selectedSize !== 'All') {
-      result = result.filter(shoe => shoe.size === +this.selectedSize);
+    if (this.selectedSizeFilter !== null) {
+      result = result.filter(item => item.size === this.selectedSizeFilter);
     }
 
-    result = result.filter(shoe => shoe.price <= this.maxPrice);
+    result = result.filter(
+      item =>
+        item.basicShoe.price >= this.selectedPriceMin &&
+        item.basicShoe.price <= this.selectedPriceMax
+    );
 
     if (this.selectedSort === 'lowToHigh') {
-      result.sort((a, b) => a.price - b.price);
+      result.sort((a, b) => a.basicShoe.price - b.basicShoe.price);
     } else if (this.selectedSort === 'highToLow') {
-      result.sort((a, b) => b.price - a.price);
+      result.sort((a, b) => b.basicShoe.price - a.basicShoe.price);
     } else {
-      result.sort((a, b) => b.rank - a.rank);
+      result.sort((a, b) => b.basicShoe.rank - a.basicShoe.rank);
     }
 
     return result;
   }
 
-  clearFilters(): void {
-    this.selectedBrand = 'All';
-    this.selectedSize = 'All';
-    this.maxPrice = 1000;
-    this.selectedSort = 'popularity';
+  toggleSizeFilter(size: number): void {
+    this.selectedSizeFilter = this.selectedSizeFilter === size ? null : size;
   }
 
-  purchaseShoe(shoe: Shoe): void {
-    const size = this.selectedSizes[shoe.id];
+  toggleBrand(brand: string): void {
+    this.selectedBrands[brand] = !this.selectedBrands[brand];
+  }
 
-    if (!size) {
-      this.purchaseMessageType = 'error';
-      this.purchaseMessage = 'Please choose a size first';
+  purchaseShoe(item: ShoeItem): void {
+    const shoeForCart: Shoe = {
+      id: item.id,
+      name: item.basicShoe.name,
+      brand: item.basicShoe.brand,
+      model: item.basicShoe.model,
+      price: item.basicShoe.price,
+      rank: item.basicShoe.rank,
+      size: item.size,
+      image: item.basicShoe.image
+    };
 
-      setTimeout(() => {
-        this.purchaseMessage = '';
-      }, 2500);
-      return;
-    }
+    this.cartService.addItem(shoeForCart, item.size);
 
-    this.cartService.addItem(shoe, size);
     this.purchaseMessageType = 'success';
-    this.purchaseMessage = `${shoe.name} added to cart!`;
+    this.purchaseMessage = `${item.basicShoe.name} added to cart!`;
 
     setTimeout(() => {
       this.purchaseMessage = '';
     }, 2500);
+  }
+
+  clearAllFilters(): void {
+    this.selectedSizeFilter = null;
+    this.selectedPriceMin = 0;
+    this.selectedPriceMax = 1000;
+    this.selectedSort = 'popularity';
+
+    this.brands.forEach(brand => {
+      this.selectedBrands[brand] = false;
+    });
+  }
+
+  removeBrandFilter(brand: string): void {
+    this.selectedBrands[brand] = false;
+  }
+
+  clearSizeFilter(): void {
+    this.selectedSizeFilter = null;
+  }
+
+  clearPriceFilter(): void {
+    this.selectedPriceMin = 0;
+    this.selectedPriceMax = 1000;
+  }
+
+  getSelectedBrands(): string[] {
+    return this.brands.filter(brand => this.selectedBrands[brand]);
+  }
+
+  getBrandCount(brand: string): number {
+    return this.shoes.filter(item => item.basicShoe.brand === brand).length;
   }
 }

@@ -1,13 +1,19 @@
 <div class="shoe-card">
-    <div class="shoe-image">
-      <img [src]="shoe.image" [alt]="shoe.name" />
-    </div>
-  
-    <h3>{{ shoe.name }}</h3>
-    <p>⭐ {{ shoe.rank }}/5</p>
-    <p class="price">${{ shoe.price }}</p>
-  
-    <button *ngIf="showButton" (click)="onButtonClick()">
+  <div class="shoe-image">
+    <img [src]="shoe.image" [alt]="shoe.name" />
+  </div>
+
+  <div class="shoe-name" [title]="shoe.name">
+    {{ shoe.name }}
+  </div>
+
+  <div class="shoe-rank">⭐ {{ shoe.rank }}/5</div>
+
+  <div class="shoe-footer">
+    <button *ngIf="showButton" type="button" (click)="onButtonClick()">
       {{ buttonText }}
     </button>
+
+    <div class="price">${{ shoe.price }}</div>
   </div>
+</div>

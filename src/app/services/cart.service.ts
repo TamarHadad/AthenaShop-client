@@ -10,11 +10,8 @@ export class CartService {
 
   constructor() {
     const savedCart = localStorage.getItem('cartItems');
-
     if (savedCart) {
-      const parsedCart = JSON.parse(savedCart);
-
-      this.cartItems = parsedCart.filter((item: any) => item.shoe && item.selectedSize);
+      this.cartItems = JSON.parse(savedCart);
     }
   }
 
@@ -23,17 +20,21 @@ export class CartService {
   }
 
   addItem(shoe: Shoe, selectedSize: number): void {
+    const alreadyExists = this.cartItems.some(
+      item => item.shoe.id === shoe.id
+    );
+
+    if (alreadyExists) {
+      return;
+    }
+
     this.cartItems.push({ shoe, selectedSize });
     this.saveCart();
   }
 
   removeItem(itemToRemove: CartItem): void {
     this.cartItems = this.cartItems.filter(
-      item =>
-        !(
-          item.shoe.id === itemToRemove.shoe.id &&
-          item.selectedSize === itemToRemove.selectedSize
-        )
+      item => item.shoe.id !== itemToRemove.shoe.id
     );
 
     this.saveCart();

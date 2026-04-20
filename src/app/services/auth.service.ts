@@ -11,9 +11,15 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userRole');
   }
 
   isUserLoggedIn(): boolean {
     return localStorage.getItem('isLoggedIn') === 'true';
+  }
+
+  isManager(): boolean {
+    return localStorage.getItem('userRole') === 'Manager';
   }
 }

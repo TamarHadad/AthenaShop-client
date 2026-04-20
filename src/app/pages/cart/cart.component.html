@@ -50,8 +50,12 @@
           <span>Total</span>
           <span>${{ total }}</span>
         </div>
-  
-        <button class="checkout-btn" (click)="checkout()">Check Out</button>
+        <button
+  class="checkout-btn"
+  [disabled]="cartItems.length === 0"
+  (click)="checkout()">
+  Check Out
+</button>
       </aside>
   
     </div>

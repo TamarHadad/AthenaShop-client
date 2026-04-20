@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { SHOES_DATA } from '../../data/shoes-data';
-import { Shoe } from '../../models/shoe.model';
+import { BasicShoe } from '../../models/basic-shoe.model';
 import { CartItem } from '../../models/cart-item.model';
 import { CartService } from '../../services/cart.service';
 import { HistoryService } from '../../services/history.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -12,7 +12,7 @@ import { HistoryService } from '../../services/history.service';
   styleUrls: ['./cart.component.less']
 })
 export class CartComponent {
-  topPicks: Shoe[] = SHOES_DATA.slice(0, 4);
+  topPicks: BasicShoe[] = SHOES_DATA.slice(0, 4);
 
   constructor(
     private cartService: CartService,

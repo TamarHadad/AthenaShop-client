@@ -7,13 +7,17 @@
   <div class="links">
     <a routerLink="/shop">Shop</a>
     <a routerLink="/history">History</a>
-    <a routerLink="/new-item">New Item</a>
+    <a *ngIf="isManagerUser" routerLink="/new-item">New Item</a>
   </div>
 
   <div class="right">
+    <span class="user-name">{{ userName }}</span>
+
     <a routerLink="/cart" class="cart">
       <span>My Cart</span>
       <img src="assets/shopping-cart.svg" alt="cart" />
     </a>
+
+    <button class="logout-btn" (click)="logout()">Logout</button>
   </div>
 </nav>

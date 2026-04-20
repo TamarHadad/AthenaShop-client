@@ -1,42 +1,48 @@
 .new-item-page {
-    padding: 40px 60px;
+    padding: 2.5em 3.75em;
     background: #fafafa;
   }
   
   .page-header {
-    margin-bottom: 30px;
-  }
-  
-  .small-title {
-    font-size: 14px;
-    color: #888;
-    margin-bottom: 6px;
+    margin-bottom: 1.875em;
   }
   
   .page-header h1 {
-    font-size: 34px;
+    font-size: 2.125em;
     margin: 0;
   }
   
   .selected-shoe-section {
     display: flex;
-    gap: 40px;
+    gap: 2.5em;
     align-items: center;
+    justify-content: space-between;
     background: white;
     border: 1px solid #eee;
-    border-radius: 20px;
-    padding: 30px;
-    margin-bottom: 50px;
+    border-radius: 1.25em;
+    padding: 1.875em;
+    margin-bottom: 3.125em;
+  }
+  
+  .empty-selection {
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 1.25em;
+    padding: 2em;
+    margin-bottom: 3.125em;
+    text-align: center;
+    color: #666;
   }
   
   .selected-image {
-    width: 320px;
-    height: 220px;
+    width: 32em;
+    height: 18em;
     background: #f3f3f3;
-    border-radius: 16px;
+    border-radius: 1em;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
   }
   
   .selected-image img {
@@ -50,36 +56,133 @@
   }
   
   .selected-info h2 {
-    margin-bottom: 15px;
+    font-size: 2em;
+    margin-bottom: 1em;
   }
   
-  .selected-info p {
-    margin: 8px 0;
-    color: #555;
+  .section-label {
+    font-size: 1em;
+    margin-bottom: 0.75em;
+    color: #444;
   }
   
-  .price {
-    font-size: 24px;
-    font-weight: bold;
-    color: #f26a6a;
+  .sizes-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.625em;
+    margin-bottom: 1.5em;
   }
   
-  .selected-info button {
-    margin-top: 20px;
-    padding: 12px 20px;
-    border: none;
-    background: black;
-    color: white;
-    border-radius: 10px;
+  .size-btn {
+    min-width: 3em;
+    padding: 0.625em 0.875em;
+    border: 1px solid #ccc;
+    border-radius: 0.625em;
+    background: white;
     cursor: pointer;
   }
   
+  .size-btn.active {
+    background: #444;
+    color: white;
+    border-color: #444;
+  }
+  
+  .info-row {
+    display: flex;
+    gap: 2.5em;
+    margin-bottom: 1.5em;
+  }
+  
+  .info-box .label {
+    color: #666;
+    margin-bottom: 0.375em;
+  }
+  
+  .info-box .value {
+    font-size: 1.25em;
+    font-weight: bold;
+  }
+  
+  .price {
+    color: #f26a6a;
+  }
+  
+  .add-btn {
+    padding: 0.875em 1.5em;
+    border: none;
+    background: black;
+    color: white;
+    border-radius: 0.625em;
+    cursor: pointer;
+  }
+  
+  .add-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .success-message {
+    margin-top: 1em;
+    color: green;
+    font-weight: bold;
+  }
+  
   .pick-section h2 {
-    margin-bottom: 20px;
+    margin-bottom: 1.25em;
   }
   
   .shoe-list {
     display: flex;
-    gap: 20px;
     flex-wrap: wrap;
+    gap: 1.25em;
+  }
+  
+  .basic-shoe-card {
+    width: 13.75em;
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 1em;
+    padding: 1em;
+  }
+  
+  .basic-shoe-image {
+    height: 8.75em;
+    background: #f3f3f3;
+    border-radius: 0.75em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75em;
+    overflow: hidden;
+  }
+  
+  .basic-shoe-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  
+  .basic-shoe-card h3 {
+    font-size: 1em;
+    margin-bottom: 0.5em;
+  }
+  
+  .basic-shoe-card p {
+    margin: 0.25em 0;
+  }
+  
+  .basic-price {
+    color: #f26a6a;
+    font-weight: bold;
+    margin-bottom: 0.75em;
+  }
+  
+  .sell-btn {
+    width: 100%;
+    padding: 0.625em;
+    border: 1px solid #ccc;
+    background: white;
+    border-radius: 0.625em;
+    cursor: pointer;
   }

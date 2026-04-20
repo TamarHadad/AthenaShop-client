@@ -1,71 +1,120 @@
 <div class="shop-page">
-
-  <div class="shop-header">
-    <div>
-      <p class="small-title">Products</p>
-      <h1>SNEAKERS SHOP</h1>
-    </div>
-
-    <div class="sort-box">
-      <label for="sort">Sort by:</label>
-      <select id="sort" [(ngModel)]="selectedSort">
-        <option value="popularity">Popularity</option>
-        <option value="lowToHigh">Price: Low to High</option>
-        <option value="highToLow">Price: High to Low</option>
-      </select>
-    </div>
-  </div>
-
   <div class="shop-content">
-
     <aside class="filters-panel">
-      <h3>Filters</h3>
+      <h3>Filter</h3>
 
-      <div class="filter-box">
-        <label for="brand">Brand</label>
-        <select id="brand" [(ngModel)]="selectedBrand">
-          <option value="All">All</option>
-          <option value="Nike">Nike</option>
-          <option value="Adidas">Adidas</option>
-          <option value="Puma">Puma</option>
-          <option value="Off-White">Off-White</option>
-        </select>
+      <div class="filter-section">
+        <div class="filter-title-row">
+          <h4>Size</h4>
+        </div>
+
+        <div class="sizes-filter-grid">
+          <button
+            type="button"
+            class="filter-size-btn"
+            *ngFor="let size of availableFilterSizes"
+            [class.active]="selectedSizeFilter === size"
+            (click)="toggleSizeFilter(size)">
+            {{ size }}
+          </button>
+        </div>
       </div>
 
-      <div class="filter-box">
-        <label for="size">Size</label>
-        <select id="size" [(ngModel)]="selectedSize">
-          <option value="All">All</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-        </select>
+      <div class="filter-section">
+        <div class="filter-title-row">
+          <h4>Brand</h4>
+        </div>
+
+        <label class="brand-option" *ngFor="let brand of brands">
+          <input
+            type="checkbox"
+            [checked]="selectedBrands[brand]"
+            (change)="toggleBrand(brand)" />
+          <span>{{ brand }} ({{ getBrandCount(brand) }})</span>
+        </label>
       </div>
 
-      <div class="filter-box">
-        <label for="price">Max Price</label>
-        <input id="price" type="number" [(ngModel)]="maxPrice" />
-      </div>
+      <div class="filter-section">
+        <div class="filter-title-row">
+          <h4>Price</h4>
+        </div>
 
-      <button class="clear-btn" (click)="clearFilters()">Clear Filters</button>
+        <div class="price-range-header">
+          <span>$0</span>
+          <span>$1K</span>
+        </div>
 
-      <div class="active-filters">
-        <span *ngIf="selectedBrand !== 'All'" class="chip">
-          Brand: {{ selectedBrand }}
-        </span>
+        <input
+          type="range"
+          min="0"
+          max="1000"
+          step="10"
+          [(ngModel)]="selectedPriceMax"
+          class="price-slider" />
 
-        <span *ngIf="selectedSize !== 'All'" class="chip">
-          Size: {{ selectedSize }}
-        </span>
+        <div class="price-inputs">
+          <div class="price-input-box">
+            <label>From</label>
+            <input type="number" [(ngModel)]="selectedPriceMin" />
+          </div>
 
-        <span *ngIf="maxPrice !== 1000" class="chip">
-          Max Price: {{ maxPrice }}
-        </span>
+          <div class="price-input-box">
+            <label>To</label>
+            <input type="number" [(ngModel)]="selectedPriceMax" />
+          </div>
+        </div>
       </div>
     </aside>
 
     <section class="products-section">
+      <div class="shop-header">
+        <div>
+          <h1>SNEAKERS SHOP</h1>
+          <p class="items-count">{{ filteredShoes.length }} sneakers</p>
+        </div>
+
+        <div class="sort-box">
+          <label for="sort">Sort by</label>
+          <select id="sort" [(ngModel)]="selectedSort">
+            <option value="popularity">Popularity</option>
+            <option value="lowToHigh">Price: Low to High</option>
+            <option value="highToLow">Price: High to Low</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="active-filters-row">
+        <div class="chips">
+          <button
+            type="button"
+            class="chip"
+            *ngIf="selectedSizeFilter !== null"
+            (click)="clearSizeFilter()">
+            Size: {{ selectedSizeFilter }} ×
+          </button>
+
+          <button
+            type="button"
+            class="chip"
+            *ngFor="let brand of getSelectedBrands()"
+            (click)="removeBrandFilter(brand)">
+            Brand: {{ brand }} ×
+          </button>
+
+          <button
+            type="button"
+            class="chip"
+            *ngIf="selectedPriceMin !== 0 || selectedPriceMax !== 1000"
+            (click)="clearPriceFilter()">
+            Price: ${{ selectedPriceMin }}-${{ selectedPriceMax }} ×
+          </button>
+        </div>
+
+        <button type="button" class="clear-all-btn" (click)="clearAllFilters()">
+          Clear all
+        </button>
+      </div>
+
       <p
         class="purchase-message"
         *ngIf="purchaseMessage"
@@ -74,30 +123,29 @@
         {{ purchaseMessage }}
       </p>
 
-      <div class="shoe-list">
-        <div class="shop-card-wrapper" *ngFor="let shoe of filteredShoes">
-          <app-shoe-card
-            [shoe]="shoe"
-            [showButton]="false">
-          </app-shoe-card>
+      <div class="shoe-grid">
+        <div class="shop-card" *ngFor="let item of filteredShoes">
+          <div class="shop-card-image">
+            <img [src]="item.basicShoe.image" [alt]="item.basicShoe.name" />
+          </div>
 
-          <div class="size-box">
-            <label>Size</label>
-            <select [(ngModel)]="selectedSizes[shoe.id]">
-              <option [ngValue]="null">Choose size</option>
-              <option [ngValue]="6">6</option>
-              <option [ngValue]="7">7</option>
-              <option [ngValue]="8">8</option>
-              <option [ngValue]="9">9</option>
-            </select>
+          <div class="shop-card-name" [title]="item.basicShoe.name">
+            {{ item.basicShoe.name }}
+          </div>
 
-            <button class="purchase-btn" (click)="purchaseShoe(shoe)">
-              Add To Cart
+          <div class="shop-card-rank">⭐ {{ item.basicShoe.rank }}/5</div>
+
+          <div class="shop-card-size">US Size {{ item.size }}</div>
+
+          <div class="shop-card-footer">
+            <button type="button" class="add-btn" (click)="purchaseShoe(item)">
+              Add
             </button>
+
+            <div class="shop-card-price">${{ item.basicShoe.price }}</div>
           </div>
         </div>
       </div>
     </section>
-
   </div>
 </div>
