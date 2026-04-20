@@ -1,0 +1,80 @@
+<div class="new-item-page">
+    <div class="page-header">
+      <h1>ADD A NEW ITEM</h1>
+    </div>
+  
+    <section class="selected-shoe-section" *ngIf="selectedBasicShoe; else noSelection">
+      <div class="selected-image">
+        <img [src]="selectedBasicShoe.image" [alt]="selectedBasicShoe.name" />
+      </div>
+  
+      <div class="selected-info">
+        <h2>{{ selectedBasicShoe.name }}</h2>
+  
+        <div class="size-area">
+          <p class="section-label">Your Size</p>
+  
+          <div class="sizes-list">
+            <button
+              type="button"
+              class="size-btn"
+              *ngFor="let size of availableSizes"
+              [class.active]="selectedSaleSize === size"
+              (click)="selectSize(size)">
+              {{ size }}
+            </button>
+          </div>
+        </div>
+  
+        <div class="info-row">
+          <div class="info-box">
+            <p class="label">Price</p>
+            <p class="value price">${{ selectedBasicShoe.price }}</p>
+          </div>
+  
+          <div class="info-box">
+            <p class="label">Rating</p>
+            <p class="value">⭐ {{ selectedBasicShoe.rank }}/5</p>
+          </div>
+        </div>
+  
+        <button
+          type="button"
+          class="add-btn"
+          [disabled]="selectedSaleSize === null"
+          (click)="addToSales()">
+          Add to Sales
+        </button>
+  
+        <p class="success-message" *ngIf="addMessage">
+          {{ addMessage }}
+        </p>
+      </div>
+    </section>
+  
+    <ng-template #noSelection>
+      <section class="empty-selection">
+        <p>בחרי מוצר מהרשימה למטה כדי להתחיל.</p>
+      </section>
+    </ng-template>
+  
+    <section class="pick-section">
+      <h2>Pick a shoe for sale</h2>
+  
+      <div class="shoe-list">
+        <div class="basic-shoe-card" *ngFor="let shoe of basicShoes">
+          <div class="basic-shoe-image">
+            <img [src]="shoe.image" [alt]="shoe.name" />
+          </div>
+  
+          <h3>{{ shoe.name }}</h3>
+          <p>⭐ {{ shoe.rank }}/5</p>
+          <p class="basic-price">${{ shoe.price }}</p>
+  
+          <button type="button" class="sell-btn" (click)="selectBasicShoe(shoe)">
+            Sell
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>

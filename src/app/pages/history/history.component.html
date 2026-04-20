@@ -1,0 +1,35 @@
+<div class="history-page">
+    <div class="history-header">
+      <h1>Buying History</h1>
+      <p>Totals: {{ totalItems }} items (${{ totalPrice }})</p>
+    </div>
+  
+    <div class="history-list">
+      <div class="history-item" *ngFor="let item of historyItems">
+  
+        <div class="history-image">
+          <img [src]="item.shoe.image" [alt]="item.shoe.name" />
+        </div>
+  
+        <div class="history-main-info">
+          <h3>{{ item.shoe.name }}</h3>
+          <p>{{ item.shoe.brand }} / {{ item.shoe.model }}</p>
+          <p>Size: {{ item.selectedSize }}</p>
+          <div class="history-price">${{ item.shoe.price }}</div>
+        </div>
+  
+        <div class="history-side-info">
+          <h4>Sale Info</h4>
+          <p><strong>Date Purchased</strong></p>
+          <p>{{ item.purchaseDate }}</p>
+          <p><strong>Day</strong></p>
+          <p>{{ item.purchaseDay }}</p>
+  
+          <div class="rate-box">
+            Rate this Item
+          </div>
+        </div>
+  
+      </div>
+    </div>
+  </div>

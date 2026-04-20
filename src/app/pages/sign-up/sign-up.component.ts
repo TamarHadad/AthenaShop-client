@@ -48,6 +48,7 @@ export class SignUpComponent implements OnInit {
 
     localStorage.setItem('registeredUser', JSON.stringify(newUser));
     localStorage.setItem('userName', newUser.userName);
+    localStorage.setItem('userRole', newUser.userRole);
 
     this.authService.login();
     this.router.navigate(['/home']);

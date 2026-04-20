@@ -8,9 +8,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./navbar.component.less']
 })
 export class NavbarComponent implements OnInit {
-
-  menuOpen = false;
   userName: string = '';
+  isManagerUser: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -19,10 +18,7 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.userName = localStorage.getItem('userName') || '';
-  }
-
-  toggleMenu(): void {
-    this.menuOpen = !this.menuOpen;
+    this.isManagerUser = this.authService.isManager();
   }
 
   logout(): void {

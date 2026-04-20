@@ -44,26 +44,40 @@ export class LoginComponent implements OnInit {
     }
 
     const savedUser = localStorage.getItem('registeredUser');
+    const savedManager = localStorage.getItem('managerUser');
 
-    if (!savedUser) {
-      this.loginError = 'No registered user found';
-      return;
-    }
-
-    const parsedUser = JSON.parse(savedUser);
     const enteredEmail = this.loginForm.value.email;
     const enteredPassword = this.loginForm.value.password;
 
+    const parsedUser = savedUser ? JSON.parse(savedUser) : null;
+    const parsedManager = savedManager ? JSON.parse(savedManager) : null;
+
     if (
+      parsedManager &&
+      parsedManager.email === enteredEmail &&
+      parsedManager.password === enteredPassword
+    ) {
+      localStorage.setItem('userName', parsedManager.userName);
+      localStorage.setItem('userRole', parsedManager.userRole);
+      this.authService.login();
+      this.loginError = '';
+      this.router.navigate(['/home']);
+      return;
+    }
+
+    if (
+      parsedUser &&
       parsedUser.email === enteredEmail &&
       parsedUser.password === enteredPassword
     ) {
       localStorage.setItem('userName', parsedUser.userName);
+      localStorage.setItem('userRole', parsedUser.userRole);
       this.authService.login();
       this.loginError = '';
       this.router.navigate(['/home']);
-    } else {
-      this.loginError = 'Email or password is incorrect';
+      return;
     }
+
+    this.loginError = 'Email or password is incorrect';
   }
 }

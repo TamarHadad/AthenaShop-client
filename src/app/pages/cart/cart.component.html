@@ -1,0 +1,76 @@
+<div class="cart-page">
+    <div class="cart-header">
+      <p class="small-title">Basket</p>
+      <h1>MY CART</h1>
+    </div>
+  
+    <div class="cart-content">
+  
+      <section class="cart-items">
+        <div class="cart-item" *ngFor="let item of cartItems">
+          <div class="item-image">
+            <img [src]="item.shoe.image" [alt]="item.shoe.name" />
+          </div>
+  
+          <div class="item-info">
+            <h3>{{ item.shoe.name }}</h3>
+            <p>Brand: {{ item.shoe.brand }}</p>
+            <p>Size: {{ item.selectedSize }}</p>
+          </div>
+  
+          <div class="item-price">
+            ${{ item.shoe.price }}
+          </div>
+  
+          <button type="button" class="remove-btn" (click)="removeItem(item)">
+            Remove
+          </button>
+        </div>
+      </section>
+  
+      <aside class="summary-box">
+        <h3>Order Summary</h3>
+  
+        <div class="summary-row">
+          <span>Original price</span>
+          <span>${{ originalPrice }}</span>
+        </div>
+  
+        <div class="summary-row">
+          <span>Delivery</span>
+          <span>${{ delivery }}</span>
+        </div>
+  
+        <div class="summary-row">
+          <span>Tax</span>
+          <span>${{ tax }}</span>
+        </div>
+  
+        <div class="summary-row total">
+          <span>Total</span>
+          <span>${{ total }}</span>
+        </div>
+        <button
+  class="checkout-btn"
+  [disabled]="cartItems.length === 0"
+  (click)="checkout()">
+  Check Out
+</button>
+      </aside>
+  
+    </div>
+  
+    <section class="top-picks-section">
+      <div class="section-header">
+        <h2>Top Picks For You</h2>
+      </div>
+  
+      <div class="cards">
+        <app-shoe-card
+          *ngFor="let shoe of topPicks"
+          [shoe]="shoe"
+          [showButton]="false">
+        </app-shoe-card>
+      </div>
+    </section>
+  </div>
